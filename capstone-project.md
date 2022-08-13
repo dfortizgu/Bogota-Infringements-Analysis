@@ -28,9 +28,13 @@ Five questions will guide your case study:
 
 
 **Key tasks:**
-| Task                       | Answer                                                                                                                                                                                                                                                                                                                             |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Identify the bussines task | Answer the question: Whats is the distribution of accidents and infringments in Bogotá                                                                                                                                                                                                                                             |
-| Determine the stakeholders | The people in charge of implementing new policies for accident managent and improve the response times in this cases                                                                                                                                                                                                               |
-| Choose a dataset           | For the Infringmets data we have [7 datasets](https://datos.movilidadbogota.gov.co/search?groupIds=37be76cd2acd491abc45c21a56284d95), one per year. And for the accident data we have 4 data bases [first 4 datasets](https://datos.movilidadbogota.gov.co/search?groupIds=d3812f8315054cdc84cf744680103713&q=siniestros%20viales) |
+| Task                       | Answer                                                                                                                                                                                                                                                                 |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Identify the bussines task | Answer the question: Whats is the distribution of accidents and infringments in Bogotá                                                                                                                                                                                 |
+| Determine the stakeholders | The people in charge of implementing new policies for accident managent and improve the response times in this cases                                                                                                                                                   |
+| Choose a dataset           | All files, original ones an changes allong the process can be founf [here](https://drive.google.com/drive/folders/19jE98GeXH6Ahxp4WmupmGIR6h4r8yjEi?usp=sharing) . The files named "Comparendos_20XX_Bogota.csv" and "Siniestros_viales_*.xlsx" are the original files |
 
+
+
+## Process
+1. As part of the data cleaning process, some mistakes in the data format of the csv files downloaded from the original source were solved. The errors consisted of line jumps along the file that changed the structure of the csv table. For correcting this, a python script was used [[python_for_data_manipulation.ipynb]]. The process is explained in the script. In total 114760 wrong lines were corrected.
