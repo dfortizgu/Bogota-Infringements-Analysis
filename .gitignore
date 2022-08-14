@@ -5,3 +5,4 @@
 .RDataTmp
 .Rhistory
 *.ini
+*.nb.html
