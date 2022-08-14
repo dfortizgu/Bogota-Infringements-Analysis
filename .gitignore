@@ -1,3 +1,6 @@
 *.xlsx
 *.csv
 *.xls
+.ipynb_checkpoints
+.RDataTmp
+.Rhistory

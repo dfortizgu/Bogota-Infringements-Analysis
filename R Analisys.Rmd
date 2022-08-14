@@ -1,0 +1,143 @@
+---
+title: "Google Capstone Project"
+output: html_notebook
+---
+
+## Import Libraries 
+
+```{r}
+library(tidyverse)
+```
+
+
+Import files for analisys
+
+
+```{r}
+infringement_2015 = read.csv(file = "new_Comparendos_2015_Bogota.csv")
+infringement_2016 = read.csv(file = "new_Comparendos_2016_Bogota.csv")
+infringement_2017 = read.csv(file = "new_Comparendos_2017_Bogota.csv")
+infringement_2018 = read.csv(file = "new_Comparendos_2018_Bogota.csv")
+infringement_2019 = read.csv(file = "new_Comparendos_2019_Bogota.csv")
+infringement_2020 = read.csv(file = "new_Comparendos_2020_Bogota.csv")
+infringement_2021 = read.csv(file = "new_Comparendos_2021_Bogota.csv")
+
+infringements = list(infringement_2015, infringement_2016, infringement_2017, infringement_2018, infringement_2019, infringement_2020, infringement_2021)
+```
+
+```{r}
+for (file in infringements){
+  print(names(file))
+}
+```
+The common columns usefull for our analisys are:
+
+- X (Longitude)
+- Y (Latitude)
+- OBJECTID (Unique Identifier)
+- FECHA_HORA (Date and Hour)
+- MEDIO_DETECCION (Detection medium)
+- CLASE_VEHICULO (Kind of vehicle)
+- TIPO_SERVICIO (Kind of service)
+- INFRACCION (Infringement)
+- DES_INFRACCION (Infringment description)
+- LOCALIDAD (Location)
+
+In the tables some of the fields have different names. We change all to the same name
+
+```{r}
+infringements[[6]] = rename(infringements[[6]], MEDIO_DETECCION = MEDIO_DETE, CLASE_VEHICULO = CLASE_VEHI, TIPO_SERVICIO = TIPO_SERVI, DES_INFRACCION = DES_INFRAC)
+infringements[[7]] = rename(infringements[[7]], MEDIO_DETECCION = MEDIO_DETE, CLASE_VEHICULO = CLASE_VEHI, TIPO_SERVICIO = TIPO_SERVI, DES_INFRACCION = DES_INFRAC)
+
+
+for (i in 1:length(infringements)){
+  infringements[[i]] = rename(infringements[[i]], LONGITUDE = X, LATITUDE = Y)
+}
+```
+
+
+In the file for infringements in 2020 there is no field LOCALIDAD. We can fill this field by using the central point of each location and assign each data point the closest location obtained from [here](https://bogota-laburbano.opendatasoft.com/explore/dataset/georeferencia-puntual-por-localidad/table/?flg=es)
+
+
+```{r}
+locations_list = read.csv("georeferencia-puntual-por-localidad.csv", sep = ";", encoding = "latin1")
+locations_list
+```
+
+For finding the distance between each data point in the 2020 infringements with each of the reference points in the `locations_list` we are going to use the package
+
+```{r}
+install.packages("geosphere")
+library("geosphere")     
+```
+
+In this library we find the `distHaversine()` function than receive the coordinates of two points and returns the [great circle distance](https://en.wikipedia.org/wiki/Great-circle_distance) for those coordinates.
+
+For making this the `closest_location()` function is created
+
+```{r}
+closest_location <- function(lat, lon){
+  # This function receive a latitude and longitude, then returns the closes location (LOCALIDAD) to that geographical point
+  
+  distances = c()
+  
+  for (row in 1:nrow(locations_list)){
+    location_lat = locations_list[row,"LATITUDE"]
+    location_lon = locations_list[row,"LONGITUDE"]
+    location_geo_data = c(location_lon, location_lat)
+    point_geo_data = c(lon, lat)
+    distance = distHaversine(location_geo_data, point_geo_data)
+    distances = append(distances, distance)
+  }
+  
+  order_index = order(distances)
+  location = locations_list[order_index[1],"LOCALIDAD"]
+  return(location)
+}
+```
+
+Now lets apply the function to each row and get is location.
+
+```{r}
+locations_fill = mapply(closest_location, infringements[[6]]$LATITUDE, infringements[[6]]$LONGITUDE)
+locations_fill
+```
+
+```{r}
+infringements[[6]]$LOCALIDAD = locations_fill
+```
+
+
+Lets select only the columns we are interested in
+
+```{r}
+for (i in 1:length(infringements)){
+  print(i)
+  infringements[[i]] = select(infringements[[i]], LATITUDE, LONGITUDE, OBJECTID, FECHA_HORA, MEDIO_DETECCION, CLASE_VEHICULO, TIPO_SERVICIO, INFRACCION, DES_INFRACCION, LOCALIDAD)
+  
+}
+
+```
+
+For working with this data easily lets combine all datasets in a single dataset
+
+infringements_2015_2021 = ()
+
+
+```{r}
+infringements_2015_2021 = do.call("rbind", infringements)
+infringements_2015_2021
+```
+
+For working in it we export it as a csv file
+
+```{r}
+write.csv(infringements_2015_2021,"infringements_2015_2021.csv", row.names = FALSE)
+
+```
+
+
+
+
+
+
