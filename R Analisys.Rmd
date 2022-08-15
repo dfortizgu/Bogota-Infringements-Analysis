@@ -60,7 +60,7 @@ In the file for infringements in 2020 there is no field LOCALIDAD. We can fill t
 
 
 ```{r}
-locations_list = read.csv("georeferencia-puntual-por-localidad.csv", sep = ";", encoding = "latin1")
+locations_list = read.csv("original_files/georeferencia-puntual-por-localidad.csv", sep = ";", encoding = "latin1")
 locations_list
 ```
 
