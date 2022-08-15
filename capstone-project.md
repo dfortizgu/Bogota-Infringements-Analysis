@@ -53,3 +53,8 @@ Five questions will guide your case study:
 		- DES_INFRACCION (Infringment description)
 		- LOCALIDAD (Location)
 	-  A single .csv file is created containing all the information of interest for the year 2015-2021 ([[infringements_2015_2021.csv]]). This file is ready for making some final cleaning and filtering with BigQuery
+	
+3. The file for infringements 2015-2021 is uploaded to Google Drive and imported from there to BigQuery (BigQuery does not allow to upload files heavier than 10MB  via web UI), then a copy of that table was made (since BigQuery does not allow to edit external files, like the ones imported from Drive) for editing. Once there the changes made to that copy are
+	- Standardize the LOCALIDAD (locations) field: Among the different files we found different ways of writing each location, like with Teusaquillo which was written like TEUSAQUILLO, TEUSQUÍLLO, 1-TEUSAQUILLO and 1-TEUSAQUÍLLO. It happened with all locations. The standart names used are  `code-name`, extracted from [[georeferencia-puntual-por-localidad.csv]]. The query used for that is written in this .sql file [[script1.sql]]
+	- 
+ 	
