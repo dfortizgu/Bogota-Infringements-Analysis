@@ -6,4 +6,5 @@
 .Rhistory
 *.ini
 *.nb.html
-
+*.twbr
+*.hyper

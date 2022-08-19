@@ -10,11 +10,11 @@ Five questions will guide your case study:
 5. Who is your audience, and what materials will help you present to them effectively?
 
 **Answers:**
-1. My client is the government of Bogotá (capital of Colombia), who want to extract valuable information from accident and infringements data in the city to implement better mobility strategies.
-2. The infringements and accident data in Bogotá for the year 2020 and 2021. A proper understanding of the geospatial data and its proper manipulation.
-3. Geospatial data obtained from the data provided by the police, which provides information about the kind of accident and the kind of infringements happened in Bogotá those years
+1. My client is the government of Bogotá (capital of Colombia), who want to extract valuable information from infringements data in the city to implement better mobility strategies.
+2. The infringements data in Bogotá for the year 2015 and 2021. A proper understanding of the geospatial data and its proper manipulation.
+3. Geospatial data obtained from the data provided by the police, which provides information about the kind of infringements happened in Bogotá those years
 4. From the open data center of the District Secretary of Mobility of Bogotá. It's [web page](https://datos.movilidadbogota.gov.co/).
-5. I want to inspect the main accident zones in the city as well as the infringement behavior over time in the city.
+5. I want to inspect the main infringement behavior over time in the city.
 
 
 **Guiding questions** 
@@ -30,9 +30,9 @@ Five questions will guide your case study:
 **Key tasks:**
 | Task                       | Answer                                                                                                                                                                                                                                                                     |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Identify the bussines task | Answer the question: Whats is the distribution of accidents and infringments in Bogotá                                                                                                                                                                                     |
-| Determine the stakeholders | The people in charge of implementing new policies for accident managent and improve the response times in this cases                                                                                                                                                       |
-| Choose a dataset           | All files, original ones an changes allong the process can be founf [here](https://drive.google.com/drive/folders/1F1dWfuO1ewgBrsvucCtswx2uwG-lOPrh?usp=sharing) . The files named "Comparendos_20XX_Bogota.csv" and "Siniestros_viales_*.xlsx/csv" are the original files |
+| Identify the bussines task | Answer the question: Whats is the distribution infringments in Bogotá                                                                                                                                                                                     |
+| Determine the stakeholders | The people in charge of implementing new policies for infringement managent                                                                                                                                                       |
+| Choose a dataset           | All files, original ones an changes allong the process can be founf [here](https://drive.google.com/drive/folders/1F1dWfuO1ewgBrsvucCtswx2uwG-lOPrh?usp=sharing) . The files named "Comparendos_20XX_Bogota.csv" are the original files |
 
 ## Process for the Infringements Data
 
@@ -60,4 +60,6 @@ Five questions will guide your case study:
 	- With the script [[script2.sql]] a new table is created (manually created the table with name correct_loc_infringements in BigQuery once executed the script), this tables contains the approximate location for each row in a new column. Then the new tables is modified with [[script3.sql]] to replace the cell with " ", "-", "Otro",  “BOGOTA D.C." or "Field was not enabled”  as original locations and put there the approximate location. Then the additional column is dropped.
 	- The kind of vehicle is standardized, correcting some errors and making all cells uppercase.  Also the detection mean is put in uppercase as well as the kind of service (with a few corrections). The script for all this changes is [[script4.sql]], which was applied to modifie the last table correct_loc_infringements.
 	- In the description of each infringement (DES_INFRACCION) were found multiple grammatical errors, for correcting this, a file that correlates the infringement code (INFRACCION) and the description was download from the transportation ministry web site [here](https://www.mintransporte.gov.co/descargar.php?id=2598). This file was modified to generate an adequate csv file ([[tabla_comparendos.csv]]) for uploading  to BigQuery (the table was called ref_infringement). Once uploaded, the finall cleaning process is made with the query shown in [[script5.sql]]. The result of this query is saved in the table clean_infringements.  
+
+4. A complete dashboard showing some information and relations extracted from the final data file is implemented in tableau. The visualizations can be seen [here](https://public.tableau.com/app/profile/david.francisco/viz/dashboard_infringements/Dashboard1?publish=yes)
  	
